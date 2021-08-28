@@ -4,6 +4,10 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import Stats from "three/examples/jsm/libs/stats.module";
 import * as dat from "dat.gui";
 
+const stats = Stats();
+document.body.appendChild(stats.dom)
+
+
 // Debug
 const gui = new dat.GUI();
 
@@ -100,6 +104,9 @@ const sizes = {
   height: window.innerHeight,
 };
 
+//监听window的resize事件 
+//更新camera的长宽比
+//更新renderer的大小
 window.addEventListener("resize", () => {
   // Update sizes
   sizes.width = window.innerWidth;
@@ -167,12 +174,18 @@ const tick = () => {
   sphere.rotation.y = -0.11 * elapsedTime;
   cloudMesh.rotation.y = -0.061 * elapsedTime;
   starMesh.rotation.y = -0.18 * elapsedTime;
+  cloudMesh.rotation.x = -0.061 * elapsedTime;
+  starMesh.rotation.x = -0.18 * elapsedTime;
+  cloudMesh.rotation.z = -0.051 * elapsedTime;
+  starMesh.rotation.z = -0.18 * elapsedTime;
 
   // Update Orbital Controls 更新轨道控制器 可以使用鼠标控制
   controls.update();
 
   // Render 渲染要在最后才能渲染
   renderer.render(scene, camera);
+
+  stats.update()
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
